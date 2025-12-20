@@ -23,24 +23,6 @@ steps:
 
 
 
-- task: PowerShell@2
-  displayName: 'Install tfsec'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Invoke-WebRequest -Uri https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-windows-amd64.exe -OutFile tfsec.exe
-      Move-Item tfsec.exe C:\Windows\System32\tfsec.exe
-      tfsec --version
-
-
-- task: PowerShell@2
-  displayName: 'Run tfsec Security Scan'
-  inputs:
-    targetType: 'inline'
-    script: |
-      tfsec $(System.DefaultWorkingDirectory)\Envs\Dev
-
-
 - task: TerraformTask@5
   inputs:
     provider: 'azurerm'
@@ -49,5 +31,10 @@ steps:
     environmentServiceNameAzureRM: 'Service connection AkshaY'
 
 
-
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\Envs\Dev'''
+    environmentServiceNameAzureRM: 'Service connection AkshaY'
 
