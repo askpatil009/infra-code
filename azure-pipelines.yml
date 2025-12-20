@@ -1,28 +1,45 @@
-<<<<<<< HEAD
 trigger: none
 
-pool: apatil
-=======
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- main
-
 pool:
-  vmImage: ubuntu-latest
->>>>>>> 46e0da52b765c7115b1b9144413c89a8660e6ab4
+  name : apatil1
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-<<<<<<< HEAD
-=======
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
->>>>>>> 46e0da52b765c7115b1b9144413c89a8660e6ab4
+# Step 1: Install Terraform
+- task: TerraformInstaller@1
+  displayName: 'Install Terraform'
+  inputs:
+    terraformVersion: 'latest'
+
+
+
+# Step 2: Azure Login + Terraform
+
+- task: AzureCLI@2
+  displayName: 'Azure Login and Terraform Init & Plan'
+  inputs:
+    azureSubscription: 'azure-terraform-oidc'
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      echo "Azure Login Check"
+      az account show
+
+      echo "Terraform Init"
+      terraform init
+
+      echo "Terraform Plan"
+      terraform plan
+
+
+
+# Step 3: tfsec Security Scan
+- task: CmdLine@2
+  displayName: 'Run tfsec Security Scan'
+  inputs:
+    script: |
+      echo "Installing tfsec"
+      curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+
+      echo "Running tfsec scan"
+      tfsec .
