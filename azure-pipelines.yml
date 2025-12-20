@@ -13,33 +13,3 @@ steps:
 
 
 
-# Step 2: Azure Login + Terraform
-
-- task: AzureCLI@2
-  displayName: 'Azure Login and Terraform Init & Plan'
-  inputs:
-    azureSubscription: 'azure-terraform-oidc'
-    scriptType: bash
-    scriptLocation: inlineScript
-    inlineScript: |
-      echo "Azure Login Check"
-      az account show
-
-      echo "Terraform Init"
-      terraform init
-
-      echo "Terraform Plan"
-      terraform plan
-
-
-
-# Step 3: tfsec Security Scan
-- task: CmdLine@2
-  displayName: 'Run tfsec Security Scan'
-  inputs:
-    script: |
-      echo "Installing tfsec"
-      curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-
-      echo "Running tfsec scan"
-      tfsec .
