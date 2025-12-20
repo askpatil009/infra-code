@@ -28,3 +28,14 @@ steps:
     command: 'plan'
     workingDirectory: '$(System.DefaultWorkingDirectory)\Envs\Dev'
     environmentServiceNameAzureRM: 'Service connection AkshaY'
+
+
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\Envs\Dev'
+    environmentServiceNameAzureRM: 'Service connection AkshaY'
+
+
