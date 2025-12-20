@@ -11,5 +11,13 @@ steps:
   inputs:
     terraformVersion: 'latest'
 
-
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\Envs\Dev'
+    backendServiceArm: 'Service connection AkshaY'
+    backendAzureRmStorageAccountName: 'storagepatil'
+    backendAzureRmContainerName: 'patilcontainer'
+    backendAzureRmKey: 'terraform.tfstate'
 
