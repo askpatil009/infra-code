@@ -1,0 +1,43 @@
+trigger: none
+
+pool: apatil
+
+steps:
+
+
+- task: TerraformInstaller@1
+  displayName: 'Install Terraform'
+  inputs:
+    terraformVersion: 'latest'
+
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\Envs\Dev'
+    backendServiceArm: 'patil service connection'
+    backendAzureRmOverrideSubscriptionID: 'a9076473-03ad-4c76-8993-4edd69689ba6'
+    backendAzureRmStorageAccountName: 'donotdeletestorage555555'
+    backendAzureRmContainerName: 'akshay'
+    backendAzureRmKey: 'akshay.tfstate'
+
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\Envs\Dev'
+    environmentServiceNameAzureRM: 'patil service connection'
+    environmentAzureRmOverrideSubscriptionID: 'a9076473-03ad-4c76-8993-4edd69689ba6'
+
+
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\Envs\Dev'
+    environmentServiceNameAzureRM: 'patil service connection'
+    environmentAzureRmOverrideSubscriptionID: 'a9076473-03ad-4c76-8993-4edd69689ba6'
+
